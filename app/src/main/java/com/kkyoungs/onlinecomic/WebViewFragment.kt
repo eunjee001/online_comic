@@ -17,11 +17,16 @@ class WebViewFragment : Fragment() {
     ): View {
         binding = FragmentWebviewBinding.inflate(inflater)
 
+        return binding.root
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val webView = binding.webView
-        webView.webViewClient = WebViewClient()
+        webView.webViewClient = WebttonWebViewClient(binding.progressBar)
         webView.settings.javaScriptEnabled = true
 
-        webView.loadUrl("https://google.com")
-        return binding.root
+        webView.loadUrl("https://comic.naver.com/webtoon/")
     }
 }
