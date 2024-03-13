@@ -3,6 +3,7 @@ package com.kkyoungs.onlinecomic
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.webkit.WebViewClient
+import com.google.android.material.tabs.TabLayoutMediator
 import com.kkyoungs.onlinecomic.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -12,19 +13,27 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.button1.setOnClickListener {
-            supportFragmentManager.beginTransaction().apply {
-                replace(R.id.framelayout, WebViewFragment())
-                commit()
-            }
-        }
-        binding.button2.setOnClickListener {
-            supportFragmentManager.beginTransaction().apply {
-                replace(R.id.framelayout, BFragment())
-                commit()
-            }
-        }
+        binding.viewPager.adapter = ViewPagerAdapter(this)
 
+        TabLayoutMediator(binding.tabLayout, binding.viewPager){ tab, position ->
+            run {
+                tab.text = "position $position"
+            }
+        }.attach()
 
+    }
+
+    override fun onBackPressed() {
+         val currentFragment = supportFragmentManager.fragments[binding.viewPager.currentItem]
+        if (currentFragment is WebViewFragment){
+            if (currentFragment.canGoBack()){
+                currentFragment.goBack()
+            }else{
+                super.onBackPressed()
+            }
+        }else {
+            super.onBackPressed()
+
+        }
     }
 }

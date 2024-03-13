@@ -10,7 +10,7 @@ import android.widget.ProgressBar
 
 class WebttonWebViewClient(private val progressBar : ProgressBar) : WebViewClient() {
     override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-        return false
+        return !(request != null && request.url.toString().contains("m.comic.naver.com"))
     }
     override fun onPageFinished(view: WebView?, url: String?) {
         super.onPageFinished(view, url)
